@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Prediction Result</h1>
+        <p><strong>Predicted Deficiency:</strong> {{ predicted_class }}</p>
+        <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image" class="result-image" style="display:block; margin:auto; width:50%;">
+
+        <h2>Automated Therapy Result: </h2>
+        {% if gemini_data.error %}
+            <p>{{ gemini_data.error }}</p>
+        {% else %}
+            {% if gemini_data is mapping %}
+                <ul>
+                    {% for key, value in gemini_data.items() %}
+                        <li><strong>{{ key }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <ul>
+                    <!-- {% for value in gemini_data %}
+                        <li>{{ value }}</li>
+                    {% endfor %} -->
+                    {{gemini_data}}
+                </ul>
+            {% endif %}
+        {% endif %}
+        
+        
+        <a href="{{ url_for('upload_file') }}">Upload Another Image</a>
+    </div>
+</body>
+</html>
